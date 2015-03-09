@@ -1,0 +1,34 @@
+From 894e93c595b56095037634a43118e29827a248f1 Mon Sep 17 00:00:00 2001
+From: Ricardo Cerqueira <cyanogenmod@cerqueira.org>
+Date: Thu, 12 Jul 2012 23:46:11 +0100
+Subject: [PATCH 1/1] Add support for ICS camera blobs
+
+Change-Id: Icf9010f4b6059405275107fadd5aac81cd294182
+---
+ frameworks/base/core/jni/android_hardware_Camera.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/frameworks/base/core/jni/android_hardware_Camera.cpp b/frameworks/base/core/jni/android_hardware_Camera.cpp
+index 147e1fc..bf605a6 100644
+--- a/frameworks/base/core/jni/android_hardware_Camera.cpp
++++ b/frameworks/base/core/jni/android_hardware_Camera.cpp
+@@ -1032,12 +1032,16 @@ static void android_hardware_Camera_stopFaceDetection(JNIEnv *env, jobject thiz)
+ static void android_hardware_Camera_enableFocusMoveCallback(JNIEnv *env, jobject thiz, jint enable)
+ {
+     ALOGV("enableFocusMoveCallback");
++#ifdef ICS_CAMERA_BLOB
++    return;
++#else
+     sp<Camera> camera = get_native_camera(env, thiz, NULL);
+     if (camera == 0) return;
+ 
+     if (camera->sendCommand(CAMERA_CMD_ENABLE_FOCUS_MOVE_MSG, enable, 0) != NO_ERROR) {
+         jniThrowRuntimeException(env, "enable focus move callback failed");
+     }
++#endif
+ }
+ 
+ //-------------------------------------------------
+-- 
+1.9.1
+
