@@ -1,8 +1,8 @@
 diff --git a/frameworks/av/services/audioflinger/AudioFlinger.cpp b/frameworks/av/services/audioflinger/AudioFlinger.cpp
-index 0b2943c..4fa189f 100644
+index 25225b0..4485323 100644
 --- a/frameworks/av/services/audioflinger/AudioFlinger.cpp
 +++ b/frameworks/av/services/audioflinger/AudioFlinger.cpp
-@@ -153,11 +153,13 @@ static int load_audio_interface(const char *if_name, audio_hw_device_t **dev)
+@@ -185,11 +185,13 @@ static int load_audio_interface(const char *if_name, audio_hw_device_t **dev)
      if (rc) {
          goto out;
      }
@@ -16,7 +16,7 @@ index 0b2943c..4fa189f 100644
      return 0;
  
  out:
-@@ -1791,6 +1793,7 @@ audio_module_handle_t AudioFlinger::loadHwModule_l(const char *name)
+@@ -1858,6 +1860,7 @@ audio_module_handle_t AudioFlinger::loadHwModule_l(const char *name)
      {  // scope for auto-lock pattern
          AutoMutex lock(mHardwareLock);
  
@@ -24,7 +24,7 @@ index 0b2943c..4fa189f 100644
          if (0 == mAudioHwDevs.size()) {
              mHardwareStatus = AUDIO_HW_GET_MASTER_VOLUME;
              if (NULL != dev->get_master_volume) {
-@@ -1808,6 +1811,7 @@ audio_module_handle_t AudioFlinger::loadHwModule_l(const char *name)
+@@ -1875,6 +1878,7 @@ audio_module_handle_t AudioFlinger::loadHwModule_l(const char *name)
                  }
              }
          }
@@ -32,7 +32,7 @@ index 0b2943c..4fa189f 100644
  
          mHardwareStatus = AUDIO_HW_SET_MASTER_VOLUME;
          if ((NULL != dev->set_master_volume) &&
-@@ -1816,12 +1820,14 @@ audio_module_handle_t AudioFlinger::loadHwModule_l(const char *name)
+@@ -1883,12 +1887,14 @@ audio_module_handle_t AudioFlinger::loadHwModule_l(const char *name)
                      AudioHwDevice::AHWD_CAN_SET_MASTER_VOLUME);
          }
  
@@ -47,7 +47,7 @@ index 0b2943c..4fa189f 100644
  
          mHardwareStatus = AUDIO_HW_IDLE;
      }
-@@ -2030,7 +2036,11 @@ status_t AudioFlinger::openOutput(audio_module_handle_t module,
+@@ -2144,7 +2150,11 @@ status_t AudioFlinger::openOutput(audio_module_handle_t module,
          thread->audioConfigChanged(AudioSystem::OUTPUT_OPENED);
  
          // the first primary output opened designates the primary hw device
@@ -60,10 +60,10 @@ index 0b2943c..4fa189f 100644
              mPrimaryHardwareDev = thread->getOutput()->audioHwDev;
  
 diff --git a/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp b/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
-index de6cc7a..19832b4 100644
+index d509ad6..cb656ff 100644
 --- a/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
 +++ b/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
-@@ -355,12 +355,15 @@ status_t AudioPolicyService::setStreamVolumeIndex(audio_stream_type_t stream,
+@@ -368,12 +368,15 @@ status_t AudioPolicyService::setStreamVolumeIndex(audio_stream_type_t stream,
          return BAD_VALUE;
      }
      Mutex::Autolock _l(mLock);
@@ -80,7 +80,7 @@ index de6cc7a..19832b4 100644
          return mpAudioPolicy->set_stream_volume_index(mpAudioPolicy, stream, index);
      }
  }
-@@ -376,12 +379,15 @@ status_t AudioPolicyService::getStreamVolumeIndex(audio_stream_type_t stream,
+@@ -389,12 +392,15 @@ status_t AudioPolicyService::getStreamVolumeIndex(audio_stream_type_t stream,
          return BAD_VALUE;
      }
      Mutex::Autolock _l(mLock);
@@ -97,15 +97,15 @@ index de6cc7a..19832b4 100644
          return mpAudioPolicy->get_stream_volume_index(mpAudioPolicy, stream, index);
      }
  }
-@@ -462,6 +468,7 @@ bool AudioPolicyService::isStreamActive(audio_stream_type_t stream, uint32_t inP
+@@ -475,6 +481,7 @@ bool AudioPolicyService::isStreamActive(audio_stream_type_t stream, uint32_t inP
  
  bool AudioPolicyService::isStreamActiveRemotely(audio_stream_type_t stream, uint32_t inPastMs) const
  {
 +#if !defined(ICS_AUDIO_BLOB) && !defined(MR1_AUDIO_BLOB)
-     if (uint32_t(stream) >= AUDIO_STREAM_CNT) {
-         return BAD_VALUE;
+     if (uint32_t(stream) >= AUDIO_STREAM_PUBLIC_CNT) {
+         return false;
      }
-@@ -470,6 +477,8 @@ bool AudioPolicyService::isStreamActiveRemotely(audio_stream_type_t stream, uint
+@@ -483,6 +490,8 @@ bool AudioPolicyService::isStreamActiveRemotely(audio_stream_type_t stream, uint
      }
      Mutex::Autolock _l(mLock);
      return mpAudioPolicy->is_stream_active_remotely(mpAudioPolicy, stream, inPastMs);

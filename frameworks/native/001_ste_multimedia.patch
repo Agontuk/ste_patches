@@ -25,7 +25,7 @@ index 463e26d..5bf104b 100644
  private:
      size_t          mSize;
 diff --git a/frameworks/native/include/binder/Parcel.h b/frameworks/native/include/binder/Parcel.h
-index 2ee99f8..c8cbfea 100644
+index 6a69761..818ba32 100644
 --- a/frameworks/native/include/binder/Parcel.h
 +++ b/frameworks/native/include/binder/Parcel.h
 @@ -28,8 +28,12 @@
@@ -68,7 +68,7 @@ index 2ee99f8..c8cbfea 100644
  
      template<typename T>
      status_t            read(LightFlattenable<T>& val) const;
-@@ -284,6 +296,9 @@ private:
+@@ -288,6 +300,9 @@ private:
  
      class FlattenableHelperInterface {
      protected:
@@ -78,7 +78,7 @@ index 2ee99f8..c8cbfea 100644
          ~FlattenableHelperInterface() { }
      public:
          virtual size_t getFlattenedSize() const = 0;
-@@ -292,11 +307,18 @@ private:
+@@ -296,11 +311,18 @@ private:
          virtual status_t unflatten(void const* buffer, size_t size, int const* fds, size_t count) = 0;
      };
  
@@ -97,7 +97,7 @@ index 2ee99f8..c8cbfea 100644
  
      public:
          virtual size_t getFlattenedSize() const {
-@@ -309,7 +331,11 @@ private:
+@@ -313,7 +335,11 @@ private:
              return val.flatten(buffer, size, fds, count);
          }
          virtual status_t unflatten(void const* buffer, size_t size, int const* fds, size_t count) {
@@ -109,7 +109,7 @@ index 2ee99f8..c8cbfea 100644
          }
      };
      status_t write(const FlattenableHelperInterface& val);
-@@ -331,11 +357,13 @@ public:
+@@ -335,11 +361,13 @@ public:
  
  // ---------------------------------------------------------------------------
  
@@ -123,7 +123,7 @@ index 2ee99f8..c8cbfea 100644
  
  template<typename T>
  status_t Parcel::write(const LightFlattenable<T>& val) {
-@@ -355,11 +383,13 @@ status_t Parcel::write(const LightFlattenable<T>& val) {
+@@ -359,11 +387,13 @@ status_t Parcel::write(const LightFlattenable<T>& val) {
      return NO_ERROR;
  }
  
@@ -138,7 +138,7 @@ index 2ee99f8..c8cbfea 100644
  template<typename T>
  status_t Parcel::read(LightFlattenable<T>& val) const {
 diff --git a/frameworks/native/include/gui/BufferItem.h b/frameworks/native/include/gui/BufferItem.h
-index ca2c35d..87f42f5 100644
+index 70b1dfb..7a18531 100644
 --- a/frameworks/native/include/gui/BufferItem.h
 +++ b/frameworks/native/include/gui/BufferItem.h
 @@ -32,8 +32,12 @@ namespace android {
@@ -155,7 +155,7 @@ index ca2c35d..87f42f5 100644
      size_t getFlattenedSize() const;
      size_t getFdCount() const;
 diff --git a/frameworks/native/include/gui/ConsumerBase.h b/frameworks/native/include/gui/ConsumerBase.h
-index 100bb26..97cfc82 100644
+index f7ab5ac..e89d363 100644
 --- a/frameworks/native/include/gui/ConsumerBase.h
 +++ b/frameworks/native/include/gui/ConsumerBase.h
 @@ -167,7 +167,10 @@ protected:
@@ -296,7 +296,7 @@ index f687fb1..38b713d 100644
          // timestamp - a monotonically increasing value in nanoseconds
          // isAutoTimestamp - if the timestamp was synthesized at queue time
 diff --git a/frameworks/native/include/media/openmax/OMX_IVCommon.h b/frameworks/native/include/media/openmax/OMX_IVCommon.h
-index 5f9e9b6..d794a99 100644
+index a5b9d18..8944349 100644
 --- a/frameworks/native/include/media/openmax/OMX_IVCommon.h
 +++ b/frameworks/native/include/media/openmax/OMX_IVCommon.h
 @@ -165,6 +165,9 @@ typedef enum OMX_COLOR_FORMATTYPE {
@@ -447,10 +447,10 @@ index 6604757..e6d6401 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/binder/Parcel.cpp b/frameworks/native/libs/binder/Parcel.cpp
-index 1dbb06f..3338a65 100644
+index e7589b1..27e5614 100644
 --- a/frameworks/native/libs/binder/Parcel.cpp
 +++ b/frameworks/native/libs/binder/Parcel.cpp
-@@ -875,6 +875,13 @@ status_t Parcel::writeBlob(size_t len, WritableBlob* outBlob)
+@@ -873,6 +873,13 @@ status_t Parcel::writeBlob(size_t len, WritableBlob* outBlob)
      return status;
  }
  
@@ -464,7 +464,7 @@ index 1dbb06f..3338a65 100644
  status_t Parcel::write(const FlattenableHelperInterface& val)
  {
      status_t err;
-@@ -1287,6 +1294,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
+@@ -1285,6 +1292,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
      return NO_ERROR;
  }
  
@@ -494,7 +494,7 @@ index 9770da2..d4db82e 100644
  
  ifeq ($(TARGET_BOARD_PLATFORM), tegra)
 diff --git a/frameworks/native/libs/gui/GLConsumer.cpp b/frameworks/native/libs/gui/GLConsumer.cpp
-index b4d0c1f..74defa5 100644
+index 778df4e..fb4744f 100644
 --- a/frameworks/native/libs/gui/GLConsumer.cpp
 +++ b/frameworks/native/libs/gui/GLConsumer.cpp
 @@ -133,6 +133,9 @@ GLConsumer::GLConsumer(const sp<IGraphicBufferConsumer>& bq, uint32_t tex,
@@ -802,10 +802,10 @@ index aa92ea0..52af354 100644
 \ No newline at end of file
 +EGL_ENTRY(EGLBoolean, eglAwakenProcessIMG, void)
 diff --git a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-index 48743af..5aa50ae 100644
+index 47d91af..f9b46ff 100644
 --- a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-@@ -3423,6 +3423,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3452,6 +3452,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
      uint32_t code;
      Parcel const* data;
      Parcel* reply;
@@ -815,7 +815,7 @@ index 48743af..5aa50ae 100644
  
      enum {
          MSG_API_CALL,
-@@ -3436,6 +3439,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3465,6 +3468,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
       */
      virtual status_t transact(uint32_t code,
              const Parcel& data, Parcel* reply, uint32_t /* flags */) {
@@ -825,7 +825,7 @@ index 48743af..5aa50ae 100644
          this->code = code;
          this->data = &data;
          this->reply = reply;
-@@ -3453,6 +3459,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3482,6 +3488,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
              looper->sendMessage(this, Message(MSG_API_CALL));
              barrier.wait();
          }
