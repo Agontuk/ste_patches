@@ -428,10 +428,10 @@ index 597167f..1c8e789 100644
      static const signed kClipMin = -278;
      static const signed kClipMax = 535;
 diff --git a/frameworks/av/services/camera/libcameraservice/device1/CameraHardwareInterface.h b/frameworks/av/services/camera/libcameraservice/device1/CameraHardwareInterface.h
-index fd5a257..6aa357b 100644
+index e5b3648..3abe138 100644
 --- a/frameworks/av/services/camera/libcameraservice/device1/CameraHardwareInterface.h
 +++ b/frameworks/av/services/camera/libcameraservice/device1/CameraHardwareInterface.h
-@@ -680,6 +680,9 @@ private:
+@@ -682,6 +682,9 @@ private:
  
      static int __set_usage(struct preview_stream_ops* w, int usage)
      {

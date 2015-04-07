@@ -802,10 +802,10 @@ index aa92ea0..52af354 100644
 \ No newline at end of file
 +EGL_ENTRY(EGLBoolean, eglAwakenProcessIMG, void)
 diff --git a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-index 47d91af..f9b46ff 100644
+index dfe5754..03e0dcb 100644
 --- a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-@@ -3452,6 +3452,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3446,6 +3446,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
      uint32_t code;
      Parcel const* data;
      Parcel* reply;
@@ -815,7 +815,7 @@ index 47d91af..f9b46ff 100644
  
      enum {
          MSG_API_CALL,
-@@ -3465,6 +3468,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3459,6 +3462,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
       */
      virtual status_t transact(uint32_t code,
              const Parcel& data, Parcel* reply, uint32_t /* flags */) {
@@ -825,7 +825,7 @@ index 47d91af..f9b46ff 100644
          this->code = code;
          this->data = &data;
          this->reply = reply;
-@@ -3482,6 +3488,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3476,6 +3482,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
              looper->sendMessage(this, Message(MSG_API_CALL));
              barrier.wait();
          }
