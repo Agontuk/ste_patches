@@ -54,10 +54,10 @@ index b57b491..d570ab3 100644
  
      struct CodecNameAndQuirks {
 diff --git a/frameworks/av/media/libstagefright/ACodec.cpp b/frameworks/av/media/libstagefright/ACodec.cpp
-index 7ee35d6..b226047 100644
+index 37d3a79..e193af4 100644
 --- a/frameworks/av/media/libstagefright/ACodec.cpp
 +++ b/frameworks/av/media/libstagefright/ACodec.cpp
-@@ -708,8 +708,12 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
+@@ -730,8 +730,12 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
@@ -70,7 +70,7 @@ index 7ee35d6..b226047 100644
  
      if (err != 0) {
          ALOGE("native_window_set_buffers_geometry failed: %s (%d)",
-@@ -4921,7 +4925,9 @@ bool ACodec::BaseState::onOMXFillBufferDone(
+@@ -4937,7 +4941,9 @@ bool ACodec::BaseState::onOMXFillBufferDone(
                  mCodec->mSkipCutBuffer->submit(info->mData);
              }
              info->mData->meta()->setInt64("timeUs", timeUs);
@@ -135,7 +135,7 @@ index 54ebb6c..84ea1b8 100644
  const char *MEDIA_MIMETYPE_VIDEO_RAW = "video/raw";
  
 diff --git a/frameworks/av/media/libstagefright/OMXCodec.cpp b/frameworks/av/media/libstagefright/OMXCodec.cpp
-index f3452f2..07c3b86 100644
+index fef92d8..bf30978 100644
 --- a/frameworks/av/media/libstagefright/OMXCodec.cpp
 +++ b/frameworks/av/media/libstagefright/OMXCodec.cpp
 @@ -397,6 +397,23 @@ void OMXCodec::findMatchingCodecs(
@@ -184,7 +184,7 @@ index f3452f2..07c3b86 100644
          /*
          * FIXME: For the Opaque color format, the frame size does not
          * need to be (w*h*3)/2. It just needs to
-@@ -1893,6 +1918,10 @@ void OMXCodec::setComponentRole(
+@@ -1887,6 +1912,10 @@ void OMXCodec::setComponentRole(
              "video_decoder.mpeg4", NULL },
          { MEDIA_MIMETYPE_VIDEO_H263,
              "video_decoder.h263", "video_encoder.h263" },
@@ -195,7 +195,7 @@ index f3452f2..07c3b86 100644
          { MEDIA_MIMETYPE_VIDEO_VP8,
              "video_decoder.vp8", "video_encoder.vp8" },
          { MEDIA_MIMETYPE_VIDEO_VP9,
-@@ -1993,6 +2022,17 @@ status_t OMXCodec::init() {
+@@ -1987,6 +2016,17 @@ status_t OMXCodec::init() {
      CHECK_EQ((int)mState, (int)LOADED);
  
      status_t err;
@@ -213,7 +213,7 @@ index f3452f2..07c3b86 100644
      if (!(mQuirks & kRequiresLoadedToIdleAfterAllocation)) {
          err = mOMX->sendCommand(mNode, OMX_CommandStateSet, OMX_StateIdle);
          CHECK_EQ(err, (status_t)OK);
-@@ -2055,7 +2095,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
+@@ -2049,7 +2089,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
      }
  
      status_t err = OK;
@@ -226,7 +226,7 @@ index f3452f2..07c3b86 100644
              && portIndex == kPortIndexInput) {
          err = mOMX->storeMetaDataInBuffers(mNode, kPortIndexInput, OMX_TRUE);
          if (err != OK) {
-@@ -2256,7 +2301,11 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
+@@ -2279,8 +2324,12 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
@@ -234,10 +234,11 @@ index f3452f2..07c3b86 100644
 +            OmxToHALFormat(def.format.video.eColorFormat));
 +#else
              def.format.video.eColorFormat);
+ #endif
 +#endif
- #else
-     OMX_COLOR_FORMATTYPE eNativeColorFormat = def.format.video.eColorFormat;
-     setNativeWindowColorFormat(eNativeColorFormat);
+ 
+     if (err != 0) {
+         ALOGE("native_window_set_buffers_geometry failed: %s (%d)",
 diff --git a/frameworks/av/media/libstagefright/SurfaceMediaSource.cpp b/frameworks/av/media/libstagefright/SurfaceMediaSource.cpp
 index 37b21a2..80420c8 100644
 --- a/frameworks/av/media/libstagefright/SurfaceMediaSource.cpp

@@ -25,7 +25,7 @@ index 463e26d..5bf104b 100644
  private:
      size_t          mSize;
 diff --git a/frameworks/native/include/binder/Parcel.h b/frameworks/native/include/binder/Parcel.h
-index 6a69761..818ba32 100644
+index 6e098bf..d152641 100644
 --- a/frameworks/native/include/binder/Parcel.h
 +++ b/frameworks/native/include/binder/Parcel.h
 @@ -28,8 +28,12 @@
@@ -55,7 +55,7 @@ index 6a69761..818ba32 100644
  
      template<typename T>
      status_t            write(const LightFlattenable<T>& val);
-@@ -168,8 +176,12 @@ public:
+@@ -171,8 +179,12 @@ public:
      sp<IBinder>         readStrongBinder() const;
      wp<IBinder>         readWeakBinder() const;
  
@@ -68,7 +68,7 @@ index 6a69761..818ba32 100644
  
      template<typename T>
      status_t            read(LightFlattenable<T>& val) const;
-@@ -288,6 +300,9 @@ private:
+@@ -291,6 +303,9 @@ private:
  
      class FlattenableHelperInterface {
      protected:
@@ -78,7 +78,7 @@ index 6a69761..818ba32 100644
          ~FlattenableHelperInterface() { }
      public:
          virtual size_t getFlattenedSize() const = 0;
-@@ -296,11 +311,18 @@ private:
+@@ -299,11 +314,18 @@ private:
          virtual status_t unflatten(void const* buffer, size_t size, int const* fds, size_t count) = 0;
      };
  
@@ -97,7 +97,7 @@ index 6a69761..818ba32 100644
  
      public:
          virtual size_t getFlattenedSize() const {
-@@ -313,7 +335,11 @@ private:
+@@ -316,7 +338,11 @@ private:
              return val.flatten(buffer, size, fds, count);
          }
          virtual status_t unflatten(void const* buffer, size_t size, int const* fds, size_t count) {
@@ -109,7 +109,7 @@ index 6a69761..818ba32 100644
          }
      };
      status_t write(const FlattenableHelperInterface& val);
-@@ -335,11 +361,13 @@ public:
+@@ -338,11 +364,13 @@ public:
  
  // ---------------------------------------------------------------------------
  
@@ -123,7 +123,7 @@ index 6a69761..818ba32 100644
  
  template<typename T>
  status_t Parcel::write(const LightFlattenable<T>& val) {
-@@ -359,11 +387,13 @@ status_t Parcel::write(const LightFlattenable<T>& val) {
+@@ -362,11 +390,13 @@ status_t Parcel::write(const LightFlattenable<T>& val) {
      return NO_ERROR;
  }
  
@@ -447,7 +447,7 @@ index 6604757..e6d6401 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/binder/Parcel.cpp b/frameworks/native/libs/binder/Parcel.cpp
-index e7589b1..27e5614 100644
+index 2805cc9..be9146b 100644
 --- a/frameworks/native/libs/binder/Parcel.cpp
 +++ b/frameworks/native/libs/binder/Parcel.cpp
 @@ -873,6 +873,13 @@ status_t Parcel::writeBlob(size_t len, WritableBlob* outBlob)
@@ -464,7 +464,7 @@ index e7589b1..27e5614 100644
  status_t Parcel::write(const FlattenableHelperInterface& val)
  {
      status_t err;
-@@ -1285,6 +1292,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
+@@ -1294,6 +1301,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
      return NO_ERROR;
  }
  

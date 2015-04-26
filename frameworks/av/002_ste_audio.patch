@@ -60,7 +60,7 @@ index 25225b0..4485323 100644
              mPrimaryHardwareDev = thread->getOutput()->audioHwDev;
  
 diff --git a/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp b/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
-index d509ad6..cb656ff 100644
+index 1467188..a5bf9d7 100644
 --- a/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
 +++ b/frameworks/av/services/audiopolicy/AudioPolicyInterfaceImplLegacy.cpp
 @@ -368,12 +368,15 @@ status_t AudioPolicyService::setStreamVolumeIndex(audio_stream_type_t stream,
@@ -102,8 +102,8 @@ index d509ad6..cb656ff 100644
  bool AudioPolicyService::isStreamActiveRemotely(audio_stream_type_t stream, uint32_t inPastMs) const
  {
 +#if !defined(ICS_AUDIO_BLOB) && !defined(MR1_AUDIO_BLOB)
-     if (uint32_t(stream) >= AUDIO_STREAM_PUBLIC_CNT) {
-         return false;
+     if (uint32_t(stream) >= AUDIO_STREAM_CNT) {
+         return BAD_VALUE;
      }
 @@ -483,6 +490,8 @@ bool AudioPolicyService::isStreamActiveRemotely(audio_stream_type_t stream, uint
      }
