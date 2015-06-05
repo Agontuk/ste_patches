@@ -1,15 +1,3 @@
-diff --git a/frameworks/native/build/phone-hdpi-512-dalvik-heap.mk b/frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
-index 102c3f1..6b97545 100644
---- a/frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
-+++ b/frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
-@@ -21,6 +21,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
-     dalvik.vm.heapstartsize=5m \
-     dalvik.vm.heapgrowthlimit=48m \
-     dalvik.vm.heapsize=128m \
--    dalvik.vm.heaptargetutilization=0.75 \
-+    dalvik.vm.heaptargetutilization=0.25 \
-     dalvik.vm.heapminfree=512k \
-     dalvik.vm.heapmaxfree=2m
 diff --git a/frameworks/native/include/binder/MemoryBase.h b/frameworks/native/include/binder/MemoryBase.h
 index 463e26d..5bf104b 100644
 --- a/frameworks/native/include/binder/MemoryBase.h
