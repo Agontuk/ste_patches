@@ -13,7 +13,7 @@ index 463e26d..5bf104b 100644
  private:
      size_t          mSize;
 diff --git a/frameworks/native/include/binder/Parcel.h b/frameworks/native/include/binder/Parcel.h
-index 6e098bf..d152641 100644
+index 6a69761..818ba32 100644
 --- a/frameworks/native/include/binder/Parcel.h
 +++ b/frameworks/native/include/binder/Parcel.h
 @@ -28,8 +28,12 @@
@@ -43,7 +43,7 @@ index 6e098bf..d152641 100644
  
      template<typename T>
      status_t            write(const LightFlattenable<T>& val);
-@@ -171,8 +179,12 @@ public:
+@@ -168,8 +176,12 @@ public:
      sp<IBinder>         readStrongBinder() const;
      wp<IBinder>         readWeakBinder() const;
  
@@ -56,7 +56,7 @@ index 6e098bf..d152641 100644
  
      template<typename T>
      status_t            read(LightFlattenable<T>& val) const;
-@@ -291,6 +303,9 @@ private:
+@@ -288,6 +300,9 @@ private:
  
      class FlattenableHelperInterface {
      protected:
@@ -66,7 +66,7 @@ index 6e098bf..d152641 100644
          ~FlattenableHelperInterface() { }
      public:
          virtual size_t getFlattenedSize() const = 0;
-@@ -299,11 +314,18 @@ private:
+@@ -296,11 +311,18 @@ private:
          virtual status_t unflatten(void const* buffer, size_t size, int const* fds, size_t count) = 0;
      };
  
@@ -85,7 +85,7 @@ index 6e098bf..d152641 100644
  
      public:
          virtual size_t getFlattenedSize() const {
-@@ -316,7 +338,11 @@ private:
+@@ -313,7 +335,11 @@ private:
              return val.flatten(buffer, size, fds, count);
          }
          virtual status_t unflatten(void const* buffer, size_t size, int const* fds, size_t count) {
@@ -97,7 +97,7 @@ index 6e098bf..d152641 100644
          }
      };
      status_t write(const FlattenableHelperInterface& val);
-@@ -338,11 +364,13 @@ public:
+@@ -335,11 +361,13 @@ public:
  
  // ---------------------------------------------------------------------------
  
@@ -111,7 +111,7 @@ index 6e098bf..d152641 100644
  
  template<typename T>
  status_t Parcel::write(const LightFlattenable<T>& val) {
-@@ -362,11 +390,13 @@ status_t Parcel::write(const LightFlattenable<T>& val) {
+@@ -359,11 +387,13 @@ status_t Parcel::write(const LightFlattenable<T>& val) {
      return NO_ERROR;
  }
  
@@ -126,7 +126,7 @@ index 6e098bf..d152641 100644
  template<typename T>
  status_t Parcel::read(LightFlattenable<T>& val) const {
 diff --git a/frameworks/native/include/gui/BufferItem.h b/frameworks/native/include/gui/BufferItem.h
-index 70b1dfb..7a18531 100644
+index 75f0100..fc88a73 100644
 --- a/frameworks/native/include/gui/BufferItem.h
 +++ b/frameworks/native/include/gui/BufferItem.h
 @@ -32,8 +32,12 @@ namespace android {
@@ -159,7 +159,7 @@ index f7ab5ac..e89d363 100644
  
      // addReleaseFence* adds the sync points associated with a fence to the set
 diff --git a/frameworks/native/include/gui/GLConsumer.h b/frameworks/native/include/gui/GLConsumer.h
-index e03de45..59707f1 100644
+index 9931ec5..c469984 100644
 --- a/frameworks/native/include/gui/GLConsumer.h
 +++ b/frameworks/native/include/gui/GLConsumer.h
 @@ -30,6 +30,11 @@
@@ -250,7 +250,7 @@ index e03de45..59707f1 100644
      // an OpenGL ES context.  For legacy reasons, this is initialized to true,
      // indicating that the ConsumerBase is considered to be attached to
 diff --git a/frameworks/native/include/gui/IGraphicBufferConsumer.h b/frameworks/native/include/gui/IGraphicBufferConsumer.h
-index 2728d82..1de5594 100644
+index 3ba9e4c..b11b73c 100644
 --- a/frameworks/native/include/gui/IGraphicBufferConsumer.h
 +++ b/frameworks/native/include/gui/IGraphicBufferConsumer.h
 @@ -43,8 +43,12 @@ class IGraphicBufferConsumer : public IInterface {
@@ -267,7 +267,7 @@ index 2728d82..1de5594 100644
          size_t getFlattenedSize() const;
          size_t getFdCount() const;
 diff --git a/frameworks/native/include/gui/IGraphicBufferProducer.h b/frameworks/native/include/gui/IGraphicBufferProducer.h
-index f687fb1..38b713d 100644
+index b8ac9b2..543b295 100644
 --- a/frameworks/native/include/gui/IGraphicBufferProducer.h
 +++ b/frameworks/native/include/gui/IGraphicBufferProducer.h
 @@ -262,8 +262,12 @@ public:
@@ -314,7 +314,7 @@ index 20466b6..4fdb425 100644
  public:
      static const sp<Fence> NO_FENCE;
 diff --git a/frameworks/native/include/ui/GraphicBuffer.h b/frameworks/native/include/ui/GraphicBuffer.h
-index 3a5b10d..20fa65d 100644
+index 7630faa..56e4ac3 100644
 --- a/frameworks/native/include/ui/GraphicBuffer.h
 +++ b/frameworks/native/include/ui/GraphicBuffer.h
 @@ -38,10 +38,17 @@ class GraphicBufferMapper;
@@ -398,7 +398,7 @@ index 0d1c68c..0e83124 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/binder/MemoryBase.cpp b/frameworks/native/libs/binder/MemoryBase.cpp
-index 6604757..e6d6401 100644
+index 033066b..04565c6 100644
 --- a/frameworks/native/libs/binder/MemoryBase.cpp
 +++ b/frameworks/native/libs/binder/MemoryBase.cpp
 @@ -25,6 +25,10 @@ namespace android {
@@ -412,7 +412,7 @@ index 6604757..e6d6401 100644
  MemoryBase::MemoryBase(const sp<IMemoryHeap>& heap,
          ssize_t offset, size_t size)
      : mSize(size), mOffset(offset), mHeap(heap)
-@@ -42,6 +46,21 @@ MemoryBase::~MemoryBase()
+@@ -42,5 +46,20 @@ MemoryBase::~MemoryBase()
  {
  }
  
@@ -433,9 +433,8 @@ index 6604757..e6d6401 100644
 +
  // ---------------------------------------------------------------------------
  }; // namespace android
- 
 diff --git a/frameworks/native/libs/binder/Parcel.cpp b/frameworks/native/libs/binder/Parcel.cpp
-index 2805cc9..be9146b 100644
+index e7589b1..27e5614 100644
 --- a/frameworks/native/libs/binder/Parcel.cpp
 +++ b/frameworks/native/libs/binder/Parcel.cpp
 @@ -873,6 +873,13 @@ status_t Parcel::writeBlob(size_t len, WritableBlob* outBlob)
@@ -452,7 +451,7 @@ index 2805cc9..be9146b 100644
  status_t Parcel::write(const FlattenableHelperInterface& val)
  {
      status_t err;
-@@ -1294,6 +1301,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
+@@ -1285,6 +1292,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
      return NO_ERROR;
  }
  
@@ -467,11 +466,11 @@ index 2805cc9..be9146b 100644
  {
      // size
 diff --git a/frameworks/native/libs/gui/Android.mk b/frameworks/native/libs/gui/Android.mk
-index 9770da2..d4db82e 100644
+index 86740ac..d7684da 100644
 --- a/frameworks/native/libs/gui/Android.mk
 +++ b/frameworks/native/libs/gui/Android.mk
-@@ -59,6 +59,10 @@ ifeq ($(BOARD_EGL_SKIP_FIRST_DEQUEUE),true)
-     LOCAL_CFLAGS += -DSURFACE_SKIP_FIRST_DEQUEUE
+@@ -58,6 +58,10 @@ endif
+ endif
  endif
  
 +ifeq ($(BOARD_USES_STE_HARDWARE), true)
@@ -482,7 +481,7 @@ index 9770da2..d4db82e 100644
  
  ifeq ($(TARGET_BOARD_PLATFORM), tegra)
 diff --git a/frameworks/native/libs/gui/GLConsumer.cpp b/frameworks/native/libs/gui/GLConsumer.cpp
-index 778df4e..fb4744f 100644
+index ca97109..2c6fd5c 100644
 --- a/frameworks/native/libs/gui/GLConsumer.cpp
 +++ b/frameworks/native/libs/gui/GLConsumer.cpp
 @@ -133,6 +133,9 @@ GLConsumer::GLConsumer(const sp<IGraphicBufferConsumer>& bq, uint32_t tex,
@@ -515,7 +514,7 @@ index 778df4e..fb4744f 100644
 +#endif
 +
      mConsumer->setConsumerUsageBits(DEFAULT_USAGE_FLAGS);
- #ifdef QCOM_BSP
+ #ifdef QCOM_HARDWARE
      mCurrentDirtyRect.clear();
 @@ -178,6 +196,16 @@ status_t GLConsumer::setDefaultMaxBufferCount(int bufferCount) {
      return mConsumer->setDefaultMaxBufferCount(bufferCount);
@@ -737,7 +736,7 @@ index 3b2984a..9736c5a 100644
  #if KHRONOS_SUPPORT_INT64 /* EGLuint64KHR requires 64-bit uint support */
  #ifndef EGL_KHR_stream
 diff --git a/frameworks/native/opengl/libs/EGL/eglApi.cpp b/frameworks/native/opengl/libs/EGL/eglApi.cpp
-index 937665b..21c5fb4 100644
+index e3d2066..d5575e0 100644
 --- a/frameworks/native/opengl/libs/EGL/eglApi.cpp
 +++ b/frameworks/native/opengl/libs/EGL/eglApi.cpp
 @@ -138,13 +138,13 @@ static const extention_map_t sExtensionMap[] = {
@@ -756,7 +755,7 @@ index 937665b..21c5fb4 100644
      // EGL_KHR_wait_sync
      { "eglWaitSyncKHR",
              (__eglMustCastToProperFunctionPointerType)&eglWaitSyncKHR },
-@@ -1610,6 +1610,7 @@ EGLBoolean eglGpuPerfHintQCOM(EGLDisplay dpy, EGLContext ctx, EGLint *attrib_lis
+@@ -1661,6 +1661,7 @@ EGLBoolean eglGpuPerfHintQCOM(EGLDisplay dpy, EGLContext ctx, EGLint *attrib_lis
  // ----------------------------------------------------------------------------
  // NVIDIA extensions
  // ----------------------------------------------------------------------------
@@ -764,36 +763,33 @@ index 937665b..21c5fb4 100644
  EGLuint64NV eglGetSystemTimeFrequencyNV()
  {
      clearError();
-@@ -1645,3 +1646,4 @@ EGLuint64NV eglGetSystemTimeNV()
+@@ -1696,3 +1697,4 @@ EGLuint64NV eglGetSystemTimeNV()
  
      return setErrorQuiet(EGL_BAD_DISPLAY, 0);
  }
 +#endif
 diff --git a/frameworks/native/opengl/libs/EGL/egl_entries.in b/frameworks/native/opengl/libs/EGL/egl_entries.in
-index aa92ea0..52af354 100644
+index 88e13cb..47a41dd 100644
 --- a/frameworks/native/opengl/libs/EGL/egl_entries.in
 +++ b/frameworks/native/opengl/libs/EGL/egl_entries.in
-@@ -86,11 +86,11 @@ EGL_ENTRY(EGLint, eglDupNativeFenceFDANDROID, EGLDisplay, EGLSyncKHR)
- EGL_ENTRY(EGLBoolean, eglGpuPerfHintQCOM, EGLDisplay, EGLContext, EGLint *)
+@@ -88,10 +88,10 @@ EGL_ENTRY(EGLBoolean, eglGpuPerfHintQCOM, EGLDisplay, EGLContext, EGLint *)
  
+ #endif /* QCOM_HARDWARE */
  /* NVIDIA extensions */
 -
-+/*
++#ifndef STE_HARDWARE
  EGL_ENTRY(EGLuint64NV, eglGetSystemTimeFrequencyNV, void)
  EGL_ENTRY(EGLuint64NV, eglGetSystemTimeNV, void)
 -
-+*/
++#endif
  /* IMG extensions */
  
  EGL_ENTRY(EGLBoolean, eglHibernateProcessIMG, void)
--EGL_ENTRY(EGLBoolean, eglAwakenProcessIMG, void)
-\ No newline at end of file
-+EGL_ENTRY(EGLBoolean, eglAwakenProcessIMG, void)
 diff --git a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-index dfe5754..03e0dcb 100644
+index 4ee3f04..b6524c9 100644
 --- a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-@@ -3446,6 +3446,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3549,6 +3549,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
      uint32_t code;
      Parcel const* data;
      Parcel* reply;
@@ -803,7 +799,7 @@ index dfe5754..03e0dcb 100644
  
      enum {
          MSG_API_CALL,
-@@ -3459,6 +3462,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3562,6 +3565,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
       */
      virtual status_t transact(uint32_t code,
              const Parcel& data, Parcel* reply, uint32_t /* flags */) {
@@ -813,7 +809,7 @@ index dfe5754..03e0dcb 100644
          this->code = code;
          this->data = &data;
          this->reply = reply;
-@@ -3476,6 +3482,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3579,6 +3585,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
              looper->sendMessage(this, Message(MSG_API_CALL));
              barrier.wait();
          }
