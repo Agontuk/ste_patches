@@ -398,7 +398,7 @@ index 0d1c68c..0e83124 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/binder/MemoryBase.cpp b/frameworks/native/libs/binder/MemoryBase.cpp
-index 033066b..04565c6 100644
+index 033066b..e6d6401 100644
 --- a/frameworks/native/libs/binder/MemoryBase.cpp
 +++ b/frameworks/native/libs/binder/MemoryBase.cpp
 @@ -25,6 +25,10 @@ namespace android {
@@ -412,7 +412,7 @@ index 033066b..04565c6 100644
  MemoryBase::MemoryBase(const sp<IMemoryHeap>& heap,
          ssize_t offset, size_t size)
      : mSize(size), mOffset(offset), mHeap(heap)
-@@ -42,5 +46,20 @@ MemoryBase::~MemoryBase()
+@@ -42,5 +46,28 @@ MemoryBase::~MemoryBase()
  {
  }
  
@@ -433,6 +433,14 @@ index 033066b..04565c6 100644
 +
  // ---------------------------------------------------------------------------
  }; // namespace android
++
++#ifndef __LP64__
++// Backwards compatibility for libdatabase_sqlcipher (http://b/8253769).
++extern "C" void _ZN7android10MemoryBaseC1ERKNS_2spINS_11IMemoryHeapEEEij(void*, void*, ssize_t, size_t);
++extern "C" void _ZN7android10MemoryBaseC1ERKNS_2spINS_11IMemoryHeapEEElj(void* obj, void* h, long o, unsigned int size) {
++    _ZN7android10MemoryBaseC1ERKNS_2spINS_11IMemoryHeapEEEij(obj, h, o, size);
++}
++#endif
 diff --git a/frameworks/native/libs/binder/Parcel.cpp b/frameworks/native/libs/binder/Parcel.cpp
 index e7589b1..27e5614 100644
 --- a/frameworks/native/libs/binder/Parcel.cpp

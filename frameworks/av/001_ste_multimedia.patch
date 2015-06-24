@@ -15,10 +15,10 @@ index 85ba920..3902675 100644
      ColorConverter &operator=(const ColorConverter &);
  };
 diff --git a/frameworks/av/include/media/stagefright/MediaDefs.h b/frameworks/av/include/media/stagefright/MediaDefs.h
-index 13695d5..d2c6d10 100644
+index 13695d5..663d64c 100644
 --- a/frameworks/av/include/media/stagefright/MediaDefs.h
 +++ b/frameworks/av/include/media/stagefright/MediaDefs.h
-@@ -28,6 +28,9 @@ extern const char *MEDIA_MIMETYPE_VIDEO_AVC;
+@@ -28,8 +28,14 @@ extern const char *MEDIA_MIMETYPE_VIDEO_AVC;
  extern const char *MEDIA_MIMETYPE_VIDEO_HEVC;
  extern const char *MEDIA_MIMETYPE_VIDEO_MPEG4;
  extern const char *MEDIA_MIMETYPE_VIDEO_H263;
@@ -27,7 +27,12 @@ index 13695d5..d2c6d10 100644
 +#endif
  extern const char *MEDIA_MIMETYPE_VIDEO_MPEG2;
  extern const char *MEDIA_MIMETYPE_VIDEO_RAW;
++#ifdef STE_HARDWARE
++extern const char *MEDIA_MIMETYPE_VIDEO_VC1;
++#endif
  
+ extern const char *MEDIA_MIMETYPE_AUDIO_AMR_NB;
+ extern const char *MEDIA_MIMETYPE_AUDIO_AMR_WB;
 diff --git a/frameworks/av/include/media/stagefright/OMXCodec.h b/frameworks/av/include/media/stagefright/OMXCodec.h
 index e341160..67b6b84 100644
 --- a/frameworks/av/include/media/stagefright/OMXCodec.h
@@ -110,10 +115,10 @@ index c3a940a..fdfc350 100644
      return OK;
  }
 diff --git a/frameworks/av/media/libstagefright/MediaDefs.cpp b/frameworks/av/media/libstagefright/MediaDefs.cpp
-index c5a6939..370f9a1 100644
+index c5a6939..9a26c2d 100644
 --- a/frameworks/av/media/libstagefright/MediaDefs.cpp
 +++ b/frameworks/av/media/libstagefright/MediaDefs.cpp
-@@ -26,6 +26,9 @@ const char *MEDIA_MIMETYPE_VIDEO_AVC = "video/avc";
+@@ -26,8 +26,14 @@ const char *MEDIA_MIMETYPE_VIDEO_AVC = "video/avc";
  const char *MEDIA_MIMETYPE_VIDEO_HEVC = "video/hevc";
  const char *MEDIA_MIMETYPE_VIDEO_MPEG4 = "video/mp4v-es";
  const char *MEDIA_MIMETYPE_VIDEO_H263 = "video/3gpp";
@@ -122,9 +127,14 @@ index c5a6939..370f9a1 100644
 +#endif
  const char *MEDIA_MIMETYPE_VIDEO_MPEG2 = "video/mpeg2";
  const char *MEDIA_MIMETYPE_VIDEO_RAW = "video/raw";
++#ifdef STE_HARDWARE
++const char *MEDIA_MIMETYPE_VIDEO_VC1 = "video/vc1";
++#endif
  
+ const char *MEDIA_MIMETYPE_AUDIO_AMR_NB = "audio/3gpp";
+ const char *MEDIA_MIMETYPE_AUDIO_AMR_WB = "audio/amr-wb";
 diff --git a/frameworks/av/media/libstagefright/OMXCodec.cpp b/frameworks/av/media/libstagefright/OMXCodec.cpp
-index 58372ed..5a82724 100644
+index 58372ed..a95c5e8 100644
 --- a/frameworks/av/media/libstagefright/OMXCodec.cpp
 +++ b/frameworks/av/media/libstagefright/OMXCodec.cpp
 @@ -247,6 +247,23 @@ void OMXCodec::findMatchingCodecs(
@@ -151,9 +161,9 @@ index 58372ed..5a82724 100644
  // static
  uint32_t OMXCodec::getComponentQuirks(
          const sp<MediaCodecInfo> &info) {
-@@ -270,6 +287,11 @@ bool OMXCodec::findCodecQuirks(const char *componentName, uint32_t *quirks) {
-     if (list == NULL) {
-         return false;
+@@ -260,6 +277,11 @@ uint32_t OMXCodec::getComponentQuirks(
+     if (info->hasQuirk("output-buffers-are-unreadable")) {
+         quirks |= kOutputBuffersAreUnreadable;
      }
 +#ifdef STE_HARDWARE
 +    if (info->hasQuirk("requires-store-metadata-before-idle")) {
@@ -161,8 +171,8 @@ index 58372ed..5a82724 100644
 +    }
 +#endif
  
-     ssize_t index = list->findCodecByName(componentName);
- 
+     return quirks;
+ }
 @@ -803,6 +825,9 @@ static size_t getFrameSize(
          case OMX_COLOR_FormatYUV420Planar:
          case OMX_COLOR_FormatYUV420SemiPlanar:
