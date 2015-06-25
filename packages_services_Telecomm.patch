@@ -1,0 +1,38 @@
+From f6d7e360e326e2754db137d0e57d8bce44c5243f Mon Sep 17 00:00:00 2001
+From: Szymon Janc <szymon.janc@tieto.com>
+Date: Tue, 17 Feb 2015 15:23:26 +0100
+Subject: [PATCH 1/1] Fix invalid BT icon while in call
+
+BT SCO connection may fail and this should be handled correctly.
+If Audio State changed event is received with new state disconnected
+this should be treated as connection complete and pending flag
+should be cleared.
+
+This fix invalid BT icon in call window when SCO is rejected by
+remote device.
+
+Change-Id: I7e5ea04d2f09c786859995cbc9fc52eabbfb8e4b
+---
+ packages/services/Telecomm/src/com/android/server/telecom/BluetoothManager.java | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/packages/services/Telecomm/src/com/android/server/telecom/BluetoothManager.java b/packages/services/Telecomm/src/com/android/server/telecom/BluetoothManager.java
+index f74349f..8aa294d 100644
+--- a/packages/services/Telecomm/src/com/android/server/telecom/BluetoothManager.java
++++ b/packages/services/Telecomm/src/com/android/server/telecom/BluetoothManager.java
+@@ -70,6 +70,12 @@ public class BluetoothManager {
+                                            BluetoothHeadset.STATE_AUDIO_DISCONNECTED);
+                 Log.d(this, "mReceiver: HEADSET_AUDIO_STATE_CHANGED_ACTION");
+                 Log.d(this, "==> new state: %s", bluetoothHeadsetAudioState);
++
++                // if Bluetooth Audio connection failed pending should be
++                // cleared to avoid invalid BT icon while in call
++                if (bluetoothHeadsetAudioState == BluetoothHeadset.STATE_AUDIO_DISCONNECTED)
++                        mBluetoothConnectionPending = false;
++
+                 updateBluetoothState();
+             }
+         }
+-- 
+1.9.1
+
