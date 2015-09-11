@@ -435,7 +435,7 @@ index 6604757..e6d6401 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/binder/Parcel.cpp b/frameworks/native/libs/binder/Parcel.cpp
-index 2805cc9..be9146b 100644
+index a7a3157..f07ea02 100644
 --- a/frameworks/native/libs/binder/Parcel.cpp
 +++ b/frameworks/native/libs/binder/Parcel.cpp
 @@ -873,6 +873,13 @@ status_t Parcel::writeBlob(size_t len, WritableBlob* outBlob)
@@ -452,7 +452,7 @@ index 2805cc9..be9146b 100644
  status_t Parcel::write(const FlattenableHelperInterface& val)
  {
      status_t err;
-@@ -1294,6 +1301,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
+@@ -1298,6 +1305,13 @@ status_t Parcel::readBlob(size_t len, ReadableBlob* outBlob) const
      return NO_ERROR;
  }
  
@@ -790,10 +790,10 @@ index aa92ea0..52af354 100644
 \ No newline at end of file
 +EGL_ENTRY(EGLBoolean, eglAwakenProcessIMG, void)
 diff --git a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-index dfe5754..03e0dcb 100644
+index 0efe33c..d8d5569 100644
 --- a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-@@ -3446,6 +3446,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3443,6 +3443,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
      uint32_t code;
      Parcel const* data;
      Parcel* reply;
@@ -803,7 +803,7 @@ index dfe5754..03e0dcb 100644
  
      enum {
          MSG_API_CALL,
-@@ -3459,6 +3462,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3456,6 +3459,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
       */
      virtual status_t transact(uint32_t code,
              const Parcel& data, Parcel* reply, uint32_t /* flags */) {
@@ -813,7 +813,7 @@ index dfe5754..03e0dcb 100644
          this->code = code;
          this->data = &data;
          this->reply = reply;
-@@ -3476,6 +3482,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -3473,6 +3479,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
              looper->sendMessage(this, Message(MSG_API_CALL));
              barrier.wait();
          }

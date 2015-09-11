@@ -1,8 +1,8 @@
 diff --git a/build/core/Makefile b/build/core/Makefile
-index 6cb896c..d2d945d 100644
+index 6d9ba09..0e01b28 100644
 --- a/build/core/Makefile
 +++ b/build/core/Makefile
-@@ -890,6 +890,10 @@ ifeq ($(strip $(BOARD_KERNEL_SEPARATED_DT)),true)
+@@ -903,6 +903,10 @@ ifeq ($(strip $(BOARD_KERNEL_SEPARATED_DT)),true)
    RECOVERYIMAGE_EXTRA_DEPS    := $(INSTALLED_DTIMAGE_TARGET)
  endif
  
@@ -13,7 +13,7 @@ index 6cb896c..d2d945d 100644
  # Keys authorized to sign OTA packages this build will accept.  The
  # build always uses dev-keys for this; release packaging tools will
  # substitute other keys for this one.
-@@ -917,9 +921,11 @@ $(RECOVERY_INSTALL_OTA_KEYS): $(OTA_PUBLIC_KEYS) $(DUMPKEY_JAR) $(extra_keys)
+@@ -930,9 +934,11 @@ $(RECOVERY_INSTALL_OTA_KEYS): $(OTA_PUBLIC_KEYS) $(DUMPKEY_JAR) $(extra_keys)
  	@mkdir -p $(dir $@)
  	java -jar $(DUMPKEY_JAR) $(PRIVATE_OTA_PUBLIC_KEYS) $(extra_keys) > $@
  
@@ -27,7 +27,7 @@ index 6cb896c..d2d945d 100644
  		$(recovery_binary) \
  		$(recovery_initrc) $(recovery_sepolicy) \
  		$(INSTALLED_2NDBOOTLOADER_TARGET) \
-@@ -938,6 +944,7 @@ $(recovery_ramdisk): $(MKBOOTFS) $(MINIGZIP) $(RECOVERYIMAGE_EXTRA_DEPS) \
+@@ -951,6 +957,7 @@ $(recovery_ramdisk): $(MKBOOTFS) $(MINIGZIP) $(RECOVERYIMAGE_EXTRA_DEPS) \
  	$(hide) cp -f $(recovery_sepolicy) $(TARGET_RECOVERY_ROOT_OUT)/sepolicy
  	$(hide) -cp $(TARGET_ROOT_OUT)/init.recovery.*.rc $(TARGET_RECOVERY_ROOT_OUT)/
  	$(hide) cp -f $(recovery_binary) $(TARGET_RECOVERY_ROOT_OUT)/sbin/
@@ -35,7 +35,7 @@ index 6cb896c..d2d945d 100644
  	$(hide) mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/res
  	$(hide) rm -rf $(TARGET_RECOVERY_ROOT_OUT)/res/*
  	$(hide) cp -rf $(recovery_resources_common)/* $(TARGET_RECOVERY_ROOT_OUT)/res
-@@ -951,12 +958,21 @@ $(recovery_ramdisk): $(MKBOOTFS) $(MINIGZIP) $(RECOVERYIMAGE_EXTRA_DEPS) \
+@@ -964,12 +971,21 @@ $(recovery_ramdisk): $(MKBOOTFS) $(MINIGZIP) $(RECOVERYIMAGE_EXTRA_DEPS) \
  	$(hide) cp $(RECOVERY_INSTALL_OTA_KEYS) $(TARGET_RECOVERY_ROOT_OUT)/res/keys
  	$(hide) cat $(INSTALLED_DEFAULT_PROP_TARGET) $(recovery_build_prop) \
  	        > $(TARGET_RECOVERY_ROOT_OUT)/default.prop
@@ -59,11 +59,30 @@ index 6cb896c..d2d945d 100644
  ifndef BOARD_CUSTOM_BOOTIMG_MK
  $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) $(recovery_ramdisk) \
  		$(recovery_kernel)
+@@ -1718,13 +1734,17 @@ ifneq ($(TARGET_UNIFIED_DEVICE),)
+     endif
+ endif
+ 
++ifneq ($(BLOCK_BASED_OTA),false)
++    $(INTERNAL_OTA_PACKAGE_TARGET): block_based := --block
++endif
++
+ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
+ 	@echo "$(OTA_FROM_TARGET_SCRIPT)" > $(PRODUCT_OUT)/ota_script_path
+ 	@echo "$(override_device)" > $(PRODUCT_OUT)/ota_override_device
+ 	@echo -e ${CL_YLW}"Package OTA:"${CL_RST}" $@"
+ 	$(hide) MKBOOTIMG=$(MKBOOTIMG) \
+ 	   $(OTA_FROM_TARGET_SCRIPT) -v \
+-	   --block \
++	   $(block_based) \
+ 	   $(if $(WITH_LZMA_OTA), -z) \
+ 	   -p $(HOST_OUT) \
+ 	   -k $(KEY_CERT_PAIR) \
 diff --git a/build/core/config.mk b/build/core/config.mk
-index f6d9ddc..c9d8f9e 100644
+index ddc4007..681663c 100644
 --- a/build/core/config.mk
 +++ b/build/core/config.mk
-@@ -473,6 +473,18 @@ else
+@@ -476,6 +476,18 @@ else
  MD5SUM:=md5sum
  endif
  
