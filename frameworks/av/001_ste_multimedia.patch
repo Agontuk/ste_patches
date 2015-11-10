@@ -54,10 +54,10 @@ index b57b491..d570ab3 100644
  
      struct CodecNameAndQuirks {
 diff --git a/frameworks/av/media/libstagefright/ACodec.cpp b/frameworks/av/media/libstagefright/ACodec.cpp
-index a110eae..3b73939 100644
+index 607b7b0..a3bd3f1 100644
 --- a/frameworks/av/media/libstagefright/ACodec.cpp
 +++ b/frameworks/av/media/libstagefright/ACodec.cpp
-@@ -737,8 +737,12 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
+@@ -740,8 +740,12 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
@@ -70,7 +70,7 @@ index a110eae..3b73939 100644
  
      if (err != 0) {
          ALOGE("native_window_set_buffers_geometry failed: %s (%d)",
-@@ -4961,7 +4965,9 @@ bool ACodec::BaseState::onOMXFillBufferDone(
+@@ -4974,7 +4978,9 @@ bool ACodec::BaseState::onOMXFillBufferDone(
                  mCodec->mSkipCutBuffer->submit(info->mData);
              }
              info->mData->meta()->setInt64("timeUs", timeUs);
@@ -135,7 +135,7 @@ index 54ebb6c..84ea1b8 100644
  const char *MEDIA_MIMETYPE_VIDEO_RAW = "video/raw";
  
 diff --git a/frameworks/av/media/libstagefright/OMXCodec.cpp b/frameworks/av/media/libstagefright/OMXCodec.cpp
-index 79a5864..62d2be5 100644
+index 3706e9b..73527e3 100644
 --- a/frameworks/av/media/libstagefright/OMXCodec.cpp
 +++ b/frameworks/av/media/libstagefright/OMXCodec.cpp
 @@ -397,6 +397,23 @@ void OMXCodec::findMatchingCodecs(
@@ -226,7 +226,7 @@ index 79a5864..62d2be5 100644
              && portIndex == kPortIndexInput) {
          err = mOMX->storeMetaDataInBuffers(mNode, kPortIndexInput, OMX_TRUE);
          if (err != OK) {
-@@ -2300,8 +2345,12 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
+@@ -2303,8 +2348,12 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
