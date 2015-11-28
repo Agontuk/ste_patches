@@ -53,6 +53,26 @@ index b57b491..d570ab3 100644
      };
  
      struct CodecNameAndQuirks {
+diff --git a/frameworks/av/media/libmediaplayerservice/MediaPlayerFactory.cpp b/frameworks/av/media/libmediaplayerservice/MediaPlayerFactory.cpp
+index 03fae91..d2c3ebd 100644
+--- a/frameworks/av/media/libmediaplayerservice/MediaPlayerFactory.cpp
++++ b/frameworks/av/media/libmediaplayerservice/MediaPlayerFactory.cpp
+@@ -399,6 +399,7 @@ void MediaPlayerFactory::registerBuiltinFactories() {
+     registerFactory_l(new SonivoxPlayerFactory(), SONIVOX_PLAYER);
+     registerFactory_l(new TestPlayerFactory(), TEST_PLAYER);
+ 
++#ifdef QCOM_HARDWARE
+     const char* FACTORY_LIB           = "libdashplayer.so";
+     const char* FACTORY_CREATE_FN     = "CreateDASHFactory";
+ 
+@@ -425,6 +426,7 @@ void MediaPlayerFactory::registerBuiltinFactories() {
+         }
+       }
+     }
++#endif
+     sInitComplete = true;
+ }
+ 
 diff --git a/frameworks/av/media/libstagefright/ACodec.cpp b/frameworks/av/media/libstagefright/ACodec.cpp
 index 607b7b0..a3bd3f1 100644
 --- a/frameworks/av/media/libstagefright/ACodec.cpp
